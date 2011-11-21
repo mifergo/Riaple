@@ -1,0 +1,16 @@
+<% if notice %>
+  <p id="notice" ><%= notice %></p>
+<% end %>
+
+<h1>Scrum</h1>
+
+<% @features.each do |feature| %>
+<div class="entry" >
+<%= image_tag(feature.image_url) %>
+<h3><%= feature.title %></h3>
+<%=sanitize feature.description %>
+<div class="price_line" >
+<span class="price" ><%= feature.price %></span>
+</div>
+</div>
+<% end %>

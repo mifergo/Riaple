@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  priority: MyString
+  project: MyString
+  sprint: MyString
+  state: MyString
+  owner: MyString
+  description: MyText
+
+two:
+  name: MyString
+  priority: MyString
+  project: MyString
+  sprint: MyString
+  state: MyString
+  owner: MyString
+  description: MyText

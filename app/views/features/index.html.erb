@@ -1,0 +1,133 @@
+<div class="menup">
+    <ul>
+        <li class="current"><a href="#"><span>Backlog</span></a></li>
+     <% Sprint.all(:order => "start DESC").each do |sprint| %>
+        <li><%= link_to content_tag(:span, sprint.name), :controller => "tasks", :action => "index", :sprint_id => sprint.id %></li>
+     <% end %>
+        <li><a href="sprints"><span>Configuration</span></a></li>
+    </ul>
+</div>
+<div style="clear:both"></div>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+      new Highcharts.Chart({
+          chart: {
+              renderTo: "backlog_chart",
+              defaultSeriesType: 'column'
+          },
+          title: {
+              text: "Metrics Chart"
+          },
+          xAxis: {
+              categories: <%= raw Sprint.all.map {|s| s.name} %>
+          },
+          yAxis: {
+              title: "Efective work",
+              stackLabels: {
+                enabled: true,
+                style: {
+                 fontWeight: 'bold',
+                 color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+              }
+          },
+                tooltip: {
+         formatter: function() {
+            return '<b>'+ this.x +'</b><br/>'+
+                this.series.name +': '+ this.y +'<br/>'+
+                'Total: '+ this.point.stackTotal;
+         }
+      },
+          plotOptions: {
+            column: {
+              stacking: 'normal',
+              dataLabels: {
+                enabled: true,
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+              }
+            }
+          },
+          series: [{
+              name: "Issues weight",
+              stack: "kind",
+              color: "red",
+              data: <%= @bug_weight %>
+          },{
+              name: "Activities weight",
+              stack: "kind",
+              color: "green",
+              data: <%= @activity_weight %>
+          },{
+              name: "Support weight",
+              stack: "kind",
+              color: "yellow",
+              data: <%= @support_weight %>
+          },{
+              name: "Unplanned weight",
+              stack: "plan",
+              color: "orange",
+              data: <%= @unplanned_weight %>
+          },{
+              name: "Planned weight",
+              stack: "plan",
+              color: "blue",
+              data: <%= @planned_weight %>
+          }],
+          legend: {
+              align: "center",
+              verticalAlign: 'top',
+              y: 20,
+              layout: 'horizontal'
+          }
+      });
+  });
+</script>
+<div id="backlog_chart" style="width:1000px; height:380px;"></div>
+
+<div id="feature-list">
+    <h1>Backlog</h1>
+
+    <table>
+      <tr>
+        <th><%= sortable "id" %></th>
+        <th><%= sortable "projects.name", "Project" %></th>
+        <th><%= sortable "type" %></th>
+        <th><%= sortable "name" %></th>
+        <th><%= sortable "priority" %></th>
+        <th><%= sortable "sprints.name", "Sprint" %></th>
+        <th><%= sortable "state" %></th>
+        <th><%= sortable "start" %></th>
+        <th><%= sortable "finish" %></th>
+        <th><%= sortable "weight" %></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+
+    <% @features.each do |feature| %>
+      <tr class="<%= cycle('list-line-odd','list-line-even') %>">
+        <td><%= feature.id %></td>
+        <td><%= feature.project.nil? ? 'No Project asigned' : feature.project.name %></td>
+        <td><%= feature.kind %></td>
+        <td><%= feature.name %></td>
+        <td><%= feature.priority %></td>
+        <td><%= best_in_place feature, :sprint_id, :type => :select, :collection =>
+            Sprint.all(:order => :name).map{ |sp| [sp.id, sp.name] }, :nil => "Not Sprint yet" %></td>
+        <td><%= feature.state %></td>
+        <td><%= feature.start.to_formatted_s(:short) %></td>
+        <td><%= feature.finish.nil? ? nil : feature.finish.to_formatted_s(:short) %></td>
+        <td><%= feature.weight %></td>
+
+        <td><%= eye_tag "View feature details", {:controller => "features", :id => feature}  %></td>
+        <td><%= pencil_tag "Edit feature", {:controller => "features", :id => feature}  %></td>
+
+        <td><%= delete_tag "Delete feature", feature %></td>
+      </tr>
+    <% end %>
+    </table>
+
+    <br />
+
+    <%= new_tag "New feature"%>
+</div>

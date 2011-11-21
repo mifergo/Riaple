@@ -1,0 +1,190 @@
+<div class="menup">
+    <ul>
+        <li><a href="features"><span>Backlog</span></a></li>
+     <% Sprint.all(:order => "start DESC").each do |sprint| %>
+       <% if @sprint_name == sprint.name %>
+         <li class="current">
+       <% else %>
+         <li>
+       <% end %>
+         <%= link_to content_tag(:span, sprint.name), :controller => "tasks", :action => "index", :sprint_id => sprint.id %></li>
+     <% end %>
+        <li><a href="sprints"><span>Configuration</span></a></li>
+    </ul>
+
+</div>
+
+<!--%= menu_sheet %-->
+
+<div style="clear:both"></div>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+      new Highcharts.Chart({
+          chart: {
+              renderTo: "sprint_chart"
+          },
+          title: {
+              text: "Burndown Chart"
+          },
+          xAxis: {
+              categories: <%= raw @sprint.days.inspect %>
+          },
+          yAxis: {
+              title: "Pending hours",
+              min: 0
+          },
+          tooltip: {
+              formatter: function() {
+                  return this.x + ': ' + Highcharts.numberFormat(this.y, 2) +' h'
+              }
+          },
+          series: [{
+              name: "Effort baseline",
+              type: "area",
+              lineWidth: 1,
+              color: "#008800",
+              data: <%= @sprint.baseline %>
+          },{
+              name: "Theoric Pending hours",
+              color: "red",
+              dashStyle: "ShortDash",
+              data: <%= @sprint.theorics %>
+          },{
+              name: "Upper deviation",
+              color: "#BB0000",
+              dashStyle: "ShortDot",
+              data: <%= @sprint.uppers %>
+          },{
+              name: "Lower deviation",
+              color: "#BB0000",
+              dashStyle: "ShortDot",
+              data: <%= @sprint.lowers %>
+          },{
+              name: "Pending hours",
+              color: "blue",
+              data: <%= @sprint.pendings %>
+          }],
+          legend: {
+              align: "center",
+              verticalAlign: 'top',
+              y: 20,
+              layout: 'horizontal'
+          },
+          exporting: {
+              filename: '<%= @sprint_name %>'
+          }
+      });
+  });
+</script>
+<div id="sprint_chart" style="width:1000px; height:380px;"></div>
+
+<!-- script for accordion -->
+<script>
+	$(function() {
+		$( "#accordion" ).accordion({
+			autoHeight: false,
+            active: false,
+            collapsible: true
+		});
+	});
+</script>
+
+
+
+<h1>Tasks for <%= @sprint_name %> </h1>
+  <div id="accordion">
+    <h3> <a href="#"> Filters</a></h3>
+    <div>
+        <table id="filters"><tr>
+          <td><%= form_tag({:controller => "tasks", :action => "index", :sprint_id => @sprint_id}, :method => :get) do %>
+            <b><%= label_tag :project %></b>
+            <%= collection_select( :project, :id, Project.all, :id, :name )  %>
+            <%= submit_tag ("Filter") %>
+          <% end %></td>
+          <td><%= form_tag({},:method => :get) do %>
+            <b><%= label_tag :location %></b>
+            <%= collection_select( :filter, :id, Location.all, :id, :name )  %>
+            <%= submit_tag ("Filter") %>
+          <% end %></td>
+        <tr></table>
+       </div>
+    </div>
+  </div>
+  <table>
+    <tr>
+        <th>Id</th>
+        <th>Project</th>
+        <th>Name</th>
+        <th>State</th>
+        <th>Start</th>
+        <th>Finish</th>
+        <th>Owner</th>
+        <th>Location</th>
+        <th>Effort</th>
+        <th></th>
+        <th></th>
+        <th></th>
+
+        <% @sprint.days.each do |day| %>
+          <th><%= day %></th>
+        <% end %>
+
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    <% @sprint.features.each do |feature| %>
+
+      <tr class="list-line-feature">
+        <td><%= feature.id %></td>
+        <td style="white-space:nowrap"><b><%= feature.project.name %></b></td>
+        <td style="width:30em"><b><%= feature.name %></b></td>
+        <td style="white-space:nowrap"><b><%= feature.state %></b></td>
+        <td style="white-space:nowrap"><b><%= feature.start.to_formatted_s(:short) %></b></td>
+        <td style="white-space:nowrap"><b><%= feature.finish.nil? ? nil : feature.finish.to_formatted_s(:short) %></b></td>
+        <td><!-- owner --></td>
+        <td><!-- location --></td>
+        <td><%= feature.weight %>d</td>
+        <td colspan="3"><%= add_tag "Add a new task", {:controller => "tasks", :feature_id => feature, :sprint_id => @sprint_id} %></td>
+      </tr>
+
+      <!--% Task.find_all_by_feature_id(feature.id).each do |task| %-->
+      <% @sprint.find_tasks_in_progress_by_feature(feature.id).each do |task| %>
+          <tr class="<%= cycle('list-line-odd','list-line-even') %>">
+            <td><%= task.id %></td>
+            <td></td>
+            <td style="width:30em"><%= task.name %></td>
+            <td><%= task.state %></td>
+            <td><%= task.start.to_formatted_s(:short) %></td>
+            <td style="white-space:nowrap"><%= task.finish.nil? ? nil :task.finish.to_formatted_s(:short) %></td>
+            <td  style="width:15em"><%= best_in_place task, :user_id, :nil? =>'Click to assign', :type => :select, :collection =>
+                User.assignable.select("id, name, surname").order("name, surname").map {|u| [u.id, u.name + " " + u.surname]} %></td>
+            <td><%= task.user.nil? ? 'No Owner yet' :
+                            (task.user.location.nil? ? 'No location' : task.user.location.name) %></td>
+            <td><%= task.effort %>h</td>
+            <td><%= eye_tag "View task details", {:controller => "tasks", :id => task, :sprint_id => @sprint_id}  %>
+            </td>
+            <td><%= pencil_tag "Edit task", {:controller => "tasks", :id => task, :sprint_id => @sprint_id} %>
+            </td>
+            <td><%= delete_tag "Delete task", task  %></td>
+
+
+            <% Track.find_all_by_task_id_and_sprint_id(task.id, @sprint_id).each do |tk| %>
+                <td><%= form_for tk do |fo|
+                    fo.text_field(:pending, :value => tk.pending, :size => 1)
+                end %>
+
+                </td>
+            <% end %> <!-- tracks -->
+          </tr>
+      <% end %> <!-- tasks -->
+    <% end %> <!-- features -->
+  </table>
+
+<br />
+
+    <!--%= link_to 'New Task', new_task_path %-->
+
+
+

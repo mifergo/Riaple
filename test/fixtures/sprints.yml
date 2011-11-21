@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  objective: MyText
+  start: 2011-04-03
+  end: 2011-04-03
+
+two:
+  name: MyString
+  objective: MyText
+  start: 2011-04-03
+  end: 2011-04-03

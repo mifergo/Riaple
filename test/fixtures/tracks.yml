@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  task_id: 1
+  date: 2011-05-08
+  pending: 1
+
+two:
+  task_id: 1
+  date: 2011-05-08
+  pending: 1

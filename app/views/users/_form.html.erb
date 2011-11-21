@@ -1,0 +1,55 @@
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <fieldset>
+    <legend>Enter user details</legend>
+      <div class="field">
+        <b><%= f.label "User" %></b>:
+        <%= f.text_field :login, :size => 12 %>
+      </div>
+      <div class="field">
+        <b><%= f.label :password, 'Password' %></b>:
+        <%= f.password_field :password, :size => 40 %>
+      </div>
+      <div class="field">
+        <b><%= f.label :password_confirmation, 'Confirm' %></b>:
+        <%= f.password_field :password_confirmation, :size => 40 %>
+      </div>
+      <div class="field">
+        <b><%= f.label :name %></b>:
+        <%= f.text_field :name, :size => 40 %>
+      </div>
+      <div class="field">
+        <b><%= f.label :surname %></b>:
+        <%= f.text_field :surname, :size => 40 %>
+      </div>
+      <div class="field">
+        <b><%= f.label :location_id %></b>:
+        <%= select( :user, "location_id", Location.all(:order => :name).map{ |lo| [lo.name, lo.id] },
+                :selected => @user.location_id) %>
+      </div>
+      <div class="field">
+        <b><%= f.label :rol %></b>:
+        <%= f.select :rol, User::ROLES, :selected => @user.rol %>
+      </div>
+    <div class="field">
+      <b><%= f.label "e-mail" %></b>:
+      <%= f.email_field :email, :size => 40 %>
+    </div>
+
+      <div class="actions">
+
+        <%= f.submit %>
+      </div>
+  </fieldset>
+<% end %>

@@ -1,0 +1,140 @@
+/* Global styles */
+
+#feature-list .list-line-even {
+    background: #f5f5dc;
+}
+
+#feature-list .list-line-odd {
+    background: #e6e6fa;
+}
+
+#feature-list .list-line-feature {
+    background: #87ceeb;
+
+}
+
+#feature-list th .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+#feature-list th .asc {
+  background-image: url(/images/bullet_arrow_up.png);
+}
+
+#feature-list th .desc {
+  background-image: url(/images/bullet_arrow_down.png);
+}
+
+#conf-list .list-line-even {
+    background: #f0f8ff;
+}
+
+#conf-list .list-line-odd {
+    background: #faebd7;
+}
+
+.menup {
+	font-weight:bold; font-family:Arial, Helvetica, sans-serif; font-size:13px; background-color:#FFFFFF;
+	float:left;
+	width:100%;
+	border-bottom:2px solid #155523
+}
+.menup ul {
+	list-style:none;
+	margin:0px;
+	padding:5px 10px 0
+}
+.menup li {
+ 	display:inline
+ }
+.menup a {
+ 	background:url(../images/menup_dcha.gif) no-repeat right top;
+ 	float:left;
+	margin:0 1px 0 0;
+	padding:0px;
+	color:#127e29;
+	text-decoration:none
+}
+.menup a span {
+	background:url(../images/menup_izda.gif) no-repeat left top;
+	display:block;
+	padding:5px 15px
+}
+.menup a:hover {
+	background-position:100% -75px
+}
+.menup a:hover span {
+	background-position:0% -75px;
+	color:#155523
+}
+.menup li.current a {
+	background-position:100% -75px;
+	position:relative;
+	top:2px
+}
+.menup li.current a span {
+	background-position:0% -75px;
+    color:#155523
+}
+
+#login_head {
+    background: #129e29;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    text-align: right
+}
+
+#login_head ul {
+    list-style-type:none;
+    margin:2px;
+    padding-right:4px;
+}
+
+#login_head li {
+    display: inline;  padding-right: 1em
+}
+
+.best_in_place {
+  padding: .1m;
+  cursor: hand;
+  cursor: pointer;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+}
+.best_in_place:hover, #user_account .do_hover {
+  /*padding-right: 1.5em;  */
+  background: url("/images/pencil.png") no-repeat right;
+  background-color: #CCC;
+}
+
+a.info{
+    position:relative; /*this is the key*/
+    z-index:24;
+    /*background-color: #ccff66; */
+    color:#000;
+    text-decoration:none}
+
+a.info:hover{z-index:25; background-color: #ccff00
+}
+
+a.info span{display: none}
+
+a.info:hover span{ /*the span will display just on :hover state*/
+    display:block;
+    position:absolute;
+    top:2em; left:2em; width:15em;
+    border:1px solid #00ff33;
+    background-color: #ccffcc;
+    color:#000;
+    text-align: center}
+
+#filters td{
+   padding: 15px;
+}

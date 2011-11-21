@@ -1,0 +1,46 @@
+<div class="menup">
+    <ul>
+        <li><a href="features"><span>Backlog</span></a></li>
+      <% Sprint.all(:order => "start DESC").each do |sprint| %>
+        <li><%= link_to content_tag(:span, sprint.name), :controller => "tasks", :action => "index", :sprint_id => sprint.id %></li>
+      <% end %>
+        <li class="current"><a href="#"><span>Configuration</span></a></li>
+    </ul>
+</div>
+<div class="menup">
+    <ul>
+        <li><a href="sprints"><span>Sprints</span></a></li>
+      <li><a href="users"><span>Users</span></a></li>
+        <li><a href="locations"><span>Locations</span></a></li>
+        <li class="current"><a href="#"><span>Projects</span></a></li>
+    </ul>
+</div>
+
+<div style="clear:both"></div>
+
+<div id="conf-list">
+
+    <h1>Projects</h1>
+
+    <table>
+      <tr>
+        <th>Name</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+
+    <% @projects.each do |project| %>
+      <tr  class="<%= cycle('list-line-odd','list-line-even') %>">
+        <td><%= project.name %></td>
+        <td><%= eye_tag "View project details", {:id => project} %></td>
+        <td><%= pencil_tag "Edit project", {:id => project}%></td>
+        <td><%= delete_tag "Delete project", project %></td>
+      </tr>
+    <% end %>
+    </table>
+
+    <br />
+
+    <%= new_tag 'New Project' %>
+</div>

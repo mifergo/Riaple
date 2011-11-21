@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<%= content_tag :h2, @task.name %>
+
+<p>
+  <b>Project:</b>
+  <%= @task.feature.project.name %>
+</p>
+
+<p>
+  <b>Feature:</b>
+  <%= @task.feature.name %>
+</p>
+
+<p>
+  <b>Task name:</b>
+  <%= @task.name %>
+</p>
+
+<p>
+  <b>Start:</b>
+  <%= @task.start %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%= @task.state %>
+</p>
+
+<p>
+  <b>Finish:</b>
+  <%= @task.finish %>
+</p>
+
+<p>
+  <b>Comment:</b></br>
+  <%= @task.comment %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= @task.user.nil? ? 'Not Owner yet' : @task.user.name %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%= @task.user.nil? ? 'Not Owner yet' : @task.user.location.name %>
+</p>
+
+<p>
+  <b>Effort:</b>
+  <%= @task.effort %>h
+</p>
+
+<%= link_to 'Edit', :controller => "tasks", :action => "edit", :id => @task.id, :sprint_id => @sprint_id %> |
+<%= link_to 'Back', :controller => "tasks", :action => "index", :sprint_id => @sprint_id %>

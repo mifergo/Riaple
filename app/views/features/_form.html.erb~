@@ -1,0 +1,53 @@
+<%= form_for(@feature) do |f| %>
+  <% if @feature.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@feature.errors.count, "error") %> prohibited this feature from being saved:</h2>
+
+      <ul>
+      <% @feature.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <b><%= f.label :project %></b><br />
+    <%= select( :feature, "project_id", Project.all(:order => :name).map{ |pr| [pr.name, pr.id] } )  %>
+  </div>
+  <div class="field">
+    <b><%= f.label "Type" %></b><br />
+    <%= f.select :kind, Feature::TYPE, :selected => @feature.kind %>
+  </div>
+  <div class="field">
+    <b><%= f.label :name %></b><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <b><%= f.label :priority %></b><br />
+    <%= f.select :priority, LocalConfiguration::PRIORITIZATION, :selected => @feature.priority %>
+  </div>
+  <div class="field">
+    <b><%= f.label :start %></b><br />
+    <%= f.text_field :start %>
+  </div>
+  <div class="field">
+    <b><%= f.label :sprint %></b><br />
+    <%= select( :feature, "sprint_id", Sprint.selection) %>
+  </div>
+  <div class="field">
+    <b><%= f.label :state %></b><br />
+    <%= f.select :state, LocalConfiguration::STATUS, :selected => @feature.state %>
+  </div>
+
+  <div class="field">
+    <b><%= f.label :description %></b><br />
+    <%= f.text_area :description, :rows => 4, :cols => 60 %>
+  </div>
+  <div class="field">
+    <b><%= f.label :weight %></b><br />
+    <%= f.select :weight, LocalConfiguration::FIBONACCI, :selected => @feature.weight %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

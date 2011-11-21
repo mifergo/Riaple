@@ -1,0 +1,57 @@
+<div class="menup">
+    <ul>
+        <li><a href="features"><span>Backlog</span></a></li>
+      <% Sprint.all(:order => "start DESC").each do |sprint| %>
+        <li><%= link_to content_tag(:span, sprint.name), :controller => "tasks", :action => "index", :sprint_id => sprint.id %></li>
+      <% end %>
+        <li class="current"><a href="#"><span>Configuration</span></a></li>
+    </ul>
+</div>
+<div class="menup">
+    <ul>
+        <li class="current"><a href="#"><span>Sprints</span></a></li>
+        <li><a href="users"><span>Users</span></a></li>
+        <li><a href="locations"><span>Locations</span></a></li>
+        <li><a href="projects"><span>Projects</span></a></li>
+
+    </ul>
+</div>
+<div style="clear:both"></div>
+
+<div id="conf-list">
+    <h1>Sprints</h1>
+
+    <table>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Goal</th>
+        <th>Start</th>
+        <th>Finish</th>
+        <th>Days</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+
+    <% @sprints.each do |sprint| %>
+      <tr class="<%= cycle('list-line-odd','list-line-even') %>">
+        <td><%= sprint.id %></td>
+        <td><%= sprint.name %></td>
+        <td><%= sprint.objective %></td>
+        <td><%= sprint.start %></td>
+        <td><%= sprint.finish %></td>
+        <td><%= sprint.commercial_days %></td>
+        <td><%= eye_tag "View sprint details", {:id => sprint} %></td>
+        <td><%= pencil_tag "Edit sprint", {:id => sprint}%></td>
+        <td><%= delete_tag "Delete sprint", sprint %></td>
+
+      </tr>
+    <% end %>
+    </table>
+
+    <br />
+
+    <%= new_tag 'New Sprint' %>
+
+</div>

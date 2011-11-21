@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 tRANSITIONAL//EN"
+        "http://www.w3.org/1999/TR/xhtml1/DTDxhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="es">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <LINK REL="Shortcut Icon" HREF="/images/sport_football.png">
+  <title>Riaple</title>
+  <%= stylesheet_link_tag 'scaffold', 'riaple', "themes/south-street/jquery-ui-1.8.14.custom" %>
+  <!--%= javascript_include_tag  :defaults %-->
+  <!--%= javascript_include_tag :all, :recursive => :true %-->
+  <%= javascript_include_tag "jquery.min", "highcharts", "jquery_ujs", "jquery-ui.min", "jquery.purr","best_in_place", "application" %>
+
+  <!--%= javascript_include_tag "jquery-1.4.4", "rails", "jquery.purr", "best_in_place", "application" %-->
+  <%= csrf_meta_tag %>
+
+
+
+
+</head>
+<body>
+  <div id="login_head" >
+    <ul>
+      <li><%= @user_name || "Scrum" %></li>
+      <% if session[:user_id] %>
+        <li><%= link_to image_tag("/images/door_out.png"), logout_path, :method => :delete %></li>
+      <% else %>
+        <li><%= image_tag("/images/key.png") %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div id="main">
+    <%= yield %>
+  </div>
+</body>
+</html>

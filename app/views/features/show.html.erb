@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Project: </b>
+  <%= @feature.project.nil? ? 'No Project assigned' : @feature.project.name %>
+</p>
+
+<p>
+  <b>Name: </b>
+  <%= @feature.name %>
+</p>
+
+<p>
+  <b>Priority: </b>
+  <%= @feature.priority %>
+</p>
+
+<p>
+  <b>Sprint: </b>
+  <%= @feature.sprint.nil? ? 'No Sprint yet' : @feature.sprint.name %>
+</p>
+
+<p>
+  <b>State: </b>
+  <%= @feature.state %>
+</p>
+
+<p>
+  <b>Start: </b>
+  <%= @feature.start %>
+</p>
+
+<p>
+  <b>Weight: </b>
+  <%= @feature.weight %>
+</p>
+
+<p>
+  <b>Description:</b>
+</p>
+<p>
+  <%= @feature.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_feature_path(@feature) %> |
+<%= link_to 'Back', features_path %>
